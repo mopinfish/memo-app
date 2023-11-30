@@ -4,10 +4,19 @@ import { List, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import format from 'date-fns/format';
 import { loadAll } from './store';
+import { Memo } from './model';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Main: undefined;
+  Compose: undefined;
+};
+
+type ComposeScreenProp = StackNavigationProp<RootStackParamList, 'Compose'>;
 
 export const MainScreen = () => {
-  const navigation = useNavigation();
-  const [memos, setMemos] = useState([]);
+  const navigation = useNavigation<ComposeScreenProp>();
+  const [memos, setMemos] = useState<Memo[]>([]);
 
   useEffect(() => {
     const initialize = async () => {
