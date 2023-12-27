@@ -3,6 +3,7 @@ import React from 'react'
 import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer' // 追加
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS, USER_INFO } from '../../constants/path' // USER_INFOを追加
 import { Initial, Loading, ChooseLogin } from '../../components/pages'
 import Home from './Home'
@@ -41,8 +42,22 @@ function StatisticsWithDrawer() {
 function TabRoutes() {
   return (
     <Tab.Navigator initialRouteName={HOME} screenOptions={{ headerShown: false }}>
-      <Tab.Screen name={HOME} component={HomeWithDrawer} />
-      <Tab.Screen name={STATISTICS} component={StatisticsWithDrawer} />
+      <Tab.Screen
+        name={HOME}
+        component={HomeWithDrawer}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name={STATISTICS}
+        component={StatisticsWithDrawer}
+        options={{
+          tabBarLabel: 'Statistics',
+          tabBarIcon: ({ color, size }) => <Ionicons name="bar-chart" size={size} color={color} />,
+        }}
+      />
     </Tab.Navigator>
   )
 }
