@@ -1,0 +1,48 @@
+// src/routes/Main/index.tsx
+import React from 'react'
+import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { INITIAL, LOADING, HOME, CHOOSE_LOGIN, STATISTICS } from '../../constants/path'
+import { Initial, Loading, ChooseLogin } from '../../components/pages' // ①
+import Home from './Home' // ①
+import Statistics from './Statistics' // ①
+import * as UiContext from '../../contexts/ui'
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
+const forFade = ({ current }: StackCardInterpolationProps) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+})
+function TabRoutes() {
+  return (
+    <Tab.Navigator initialRouteName={HOME}>
+      <Tab.Screen name={HOME} component={Home} />
+      <Tab.Screen name={STATISTICS} component={Statistics} />
+    </Tab.Navigator>
+  )
+}
+function switchingAuthStatus(status: UiContext.Status) {
+  switch (status) {
+    case UiContext.Status.UN_AUTHORIZED:
+      return <Stack.Screen name={CHOOSE_LOGIN} component={ChooseLogin} />
+    case UiContext.Status.AUTHORIZED:
+      return <Stack.Screen name={HOME} component={TabRoutes} />
+    case UiContext.Status.FIRST_OPEN:
+    default:
+      return <Stack.Screen name={INITIAL} component={Initial} />
+  }
+}
+function AuthWithRoutes() {
+  const uiContext = React.useContext(UiContext.Context)
+  return (
+    <Stack.Navigator initialRouteName={LOADING} screenOptions={{ cardStyleInterpolator: forFade }}>
+      {uiContext.applicationState !== UiContext.Status.LOADING ? (
+        switchingAuthStatus(uiContext.applicationState)
+      ) : (
+        <Stack.Screen name={LOADING} component={Loading} />
+      )}
+    </Stack.Navigator>
+  )
+}
+export default AuthWithRoutes
