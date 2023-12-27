@@ -22,7 +22,7 @@ const forFade = ({ current }: StackCardInterpolationProps) => ({
 // 追加
 function HomeWithDrawer() {
   return (
-    <HomeDrawer.Navigator initialRouteName={HOME}>
+    <HomeDrawer.Navigator initialRouteName={HOME} screenOptions={{ headerShown: false }}>
       <HomeDrawer.Screen name={HOME} component={Home} />
       <HomeDrawer.Screen name={USER_INFO} component={UserInfo} />
     </HomeDrawer.Navigator>
@@ -31,7 +31,7 @@ function HomeWithDrawer() {
 // 追加
 function StatisticsWithDrawer() {
   return (
-    <StatisticsDrawer.Navigator>
+    <StatisticsDrawer.Navigator screenOptions={{ headerShown: false }}>
       <StatisticsDrawer.Screen name={STATISTICS} component={Statistics} />
       <StatisticsDrawer.Screen name={USER_INFO} component={UserInfo} />
     </StatisticsDrawer.Navigator>
@@ -40,7 +40,7 @@ function StatisticsWithDrawer() {
 // Componentを追加
 function TabRoutes() {
   return (
-    <Tab.Navigator initialRouteName={HOME}>
+    <Tab.Navigator initialRouteName={HOME} screenOptions={{ headerShown: false }}>
       <Tab.Screen name={HOME} component={HomeWithDrawer} />
       <Tab.Screen name={STATISTICS} component={StatisticsWithDrawer} />
     </Tab.Navigator>
@@ -62,10 +62,7 @@ function AuthWithRoutes() {
   return (
     <Stack.Navigator
       initialRouteName={LOADING}
-      screenOptions={{
-        headerMode: 'screen',
-        cardStyleInterpolator: forFade,
-      }}
+      screenOptions={{ headerShown: false, cardStyleInterpolator: forFade }}
     >
       {uiContext.applicationState !== UiContext.Status.LOADING ? (
         switchingAuthStatus(uiContext.applicationState)
