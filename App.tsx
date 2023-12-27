@@ -1,5 +1,6 @@
 // src/App.tsx
 import React from 'react'
+import 'react-native-gesture-handler'
 import * as UiContext from './src/contexts/ui'
 import Routes from './src/routes'
 export default function App() {
