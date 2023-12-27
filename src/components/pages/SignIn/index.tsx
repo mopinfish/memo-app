@@ -1,18 +1,18 @@
-import React from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
-import analytics from '@react-native-firebase/analytics';
+import React from 'react'
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
+import analytics from '@react-native-firebase/analytics'
 
-import TextField, { dismiss } from '../../atoms/TextField';
-import Button from '../../atoms/Button';
-import SignInWithGoogle from './SignInWithGoogle';
-import { Status } from '../../../contexts/ui';
-import { UiContext, UserContext } from '../../../contexts';
-import { Todos } from '../../../domain/models';
-import * as TodosRepository from '../../../domain/repositories/todos';
-import { useControlledComponent, useNetworker } from '../../../lib/hooks';
-import * as LocalStore from '../../../lib/local-store';
-import signInWithPasswordToFirebase from '../../../lib/firebase/sign-in-with-password';
-import testIDs from '../../../constants/testIDs';
+import TextField, { dismiss } from '../../atoms/TextField'
+import Button from '../../atoms/Button'
+import SignInWithGoogle from './SignInWithGoogle'
+import { Status } from '../../../contexts/ui'
+import { UiContext, UserContext } from '../../../contexts'
+import { Todos } from '../../../domain/models'
+import * as TodosRepository from '../../../domain/repositories/todos'
+import { useControlledComponent, useNetworker } from '../../../lib/hooks'
+import * as LocalStore from '../../../lib/local-store'
+import signInWithPasswordToFirebase from '../../../lib/firebase/sign-in-with-password'
+import testIDs from '../../../constants/testIDs'
 
 const styles = StyleSheet.create({
   container: {
@@ -34,33 +34,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
-});
+})
 
 interface Props {
   actions: {
-    setTodos: (todos: Todos.Model) => void;
-  };
+    setTodos: (todos: Todos.Model) => void
+  }
 }
 
 export default function SignIn(props: Props) {
-  const { setUserState } = React.useContext(UserContext);
-  const { setApplicationState } = React.useContext(UiContext);
-  const networker = useNetworker();
-  const mailAddress = useControlledComponent('');
-  const password = useControlledComponent('');
-  const { setTodos } = props.actions;
+  const { setUserState } = React.useContext(UserContext)
+  const { setApplicationState } = React.useContext(UiContext)
+  const networker = useNetworker()
+  const mailAddress = useControlledComponent('')
+  const password = useControlledComponent('')
+  const { setTodos } = props.actions
 
   const signInWithPassword = React.useCallback(async () => {
     await networker(async () => {
-      const userInformation = await signInWithPasswordToFirebase(mailAddress.value, password.value);
-      setUserState(userInformation);
-      setApplicationState(Status.AUTHORIZED);
-      await LocalStore.UserInformation.save(userInformation);
-      const todos = await TodosRepository.getAll(userInformation.id);
-      setTodos(todos);
-      await analytics().logLogin({ method: 'mail address and password' });
-    });
-  }, [mailAddress.value, password.value, setApplicationState, networker, setUserState, setTodos]);
+      const userInformation = await signInWithPasswordToFirebase(mailAddress.value, password.value)
+      setUserState(userInformation)
+      setApplicationState(Status.AUTHORIZED)
+      await LocalStore.UserInformation.save(userInformation)
+      const todos = await TodosRepository.getAll(userInformation.id)
+      setTodos(todos)
+      await analytics().logLogin({ method: 'mail address and password' })
+    })
+  }, [mailAddress.value, password.value, setApplicationState, networker, setUserState, setTodos])
 
   return (
     <TouchableWithoutFeedback onPress={dismiss} testID={testIDs.SIGN_IN}>
@@ -95,5 +95,5 @@ export default function SignIn(props: Props) {
         </View>
       </View>
     </TouchableWithoutFeedback>
-  );
+  )
 }

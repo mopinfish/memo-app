@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import Todos, { Todo, State as TodosState } from '../../organisms/Todos';
-import ProgressPanel, { Statistic } from '../../molecules/ProgressPanel';
-import { DETAIL } from '../../../constants/path';
-import HeaderText from '../../atoms/HeaderText';
+import Todos, { Todo, State as TodosState } from '../../organisms/Todos'
+import ProgressPanel, { Statistic } from '../../molecules/ProgressPanel'
+import { DETAIL } from '../../../constants/path'
+import HeaderText from '../../atoms/HeaderText'
 
 const styles = StyleSheet.create({
   headerTextContainer: {
@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 8,
   },
-});
+})
 
 interface Props {
-  statistics: Statistic;
-  histories: TodosState;
+  statistics: Statistic
+  histories: TodosState
 }
 
 function Header(props: Props) {
@@ -28,18 +28,25 @@ function Header(props: Props) {
         <HeaderText text="History" />
       </View>
     </View>
-  );
+  )
 }
 
 export default function Statistics(props: Props) {
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation()
   const gotoDetail = React.useCallback(
     (state: Todo.State, isEditable: boolean) => {
-      navigate(DETAIL, { ...state, isEditable });
+      navigate(DETAIL, { ...state, isEditable })
     },
     [navigate],
-  );
-  const actions = React.useMemo(() => ({ gotoDetail }), [gotoDetail]);
+  )
+  const actions = React.useMemo(() => ({ gotoDetail }), [gotoDetail])
 
-  return <Todos isEditable={false} todos={props.histories} actions={actions} header={<Header {...props} />} />;
+  return (
+    <Todos
+      isEditable={false}
+      todos={props.histories}
+      actions={actions}
+      header={<Header {...props} />}
+    />
+  )
 }
