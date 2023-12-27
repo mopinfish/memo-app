@@ -1,6 +1,8 @@
 // src/index.tsx
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   container: {
@@ -10,7 +12,36 @@ const styles = StyleSheet.create({
   },
 })
 
-function Index() {
-  return <View style={styles.container} />
+function Main() {
+  return (
+    <View style={styles.container}>
+      <Text>Main</Text>
+    </View>
+  )
 }
-export default Index
+
+function Sub() {
+  return (
+    <View style={styles.container}>
+      <Text>Sub</Text>
+    </View>
+  )
+}
+
+const Tab = createBottomTabNavigator()
+
+function TabNavigator() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Main" component={Main} />
+      <Tab.Screen name="Sub" component={Sub} />
+    </Tab.Navigator>
+  )
+}
+export default function Index() {
+  return (
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
+  )
+}
