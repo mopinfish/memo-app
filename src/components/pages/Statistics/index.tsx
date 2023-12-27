@@ -1,28 +1,45 @@
-// src/components/pages/Statistics/index.tsx
-import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { DETAIL } from '../../../constants/path'
-import { StackNavigationProp } from '@react-navigation/stack'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-type NavigatorProp = StackNavigationProp<{ DETAIL: undefined }, 'DETAIL'>
+import Todos, { Todo, State as TodosState } from '../../organisms/Todos';
+import ProgressPanel, { Statistic } from '../../molecules/ProgressPanel';
+import { DETAIL } from '../../../constants/path';
+import HeaderText from '../../atoms/HeaderText';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  headerTextContainer: {
+    paddingLeft: 20,
+    marginTop: 20,
+    marginBottom: 8,
   },
-})
+});
 
-export default function Statistics() {
-  const { navigate } = useNavigation<NavigatorProp>()
+interface Props {
+  statistics: Statistic;
+  histories: TodosState;
+}
+
+function Header(props: Props) {
   return (
-    <View style={styles.container}>
-      <Text>Statistics</Text>
-      <TouchableOpacity onPress={() => navigate(DETAIL)}>
-        <Text>Go to Detail</Text>
-      </TouchableOpacity>
+    <View>
+      <ProgressPanel {...props.statistics} />
+      <View style={styles.headerTextContainer}>
+        <HeaderText text="History" />
+      </View>
     </View>
-  )
+  );
+}
+
+export default function Statistics(props: Props) {
+  const { navigate } = useNavigation();
+  const gotoDetail = React.useCallback(
+    (state: Todo.State, isEditable: boolean) => {
+      navigate(DETAIL, { ...state, isEditable });
+    },
+    [navigate],
+  );
+  const actions = React.useMemo(() => ({ gotoDetail }), [gotoDetail]);
+
+  return <Todos isEditable={false} todos={props.histories} actions={actions} header={<Header {...props} />} />;
 }
