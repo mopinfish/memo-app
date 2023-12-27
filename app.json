@@ -1,7 +1,8 @@
 {
+  "name": "praiser",
   "expo": {
-    "name": "memo-app",
-    "slug": "memo-app",
+    "name": "plaiser",
+    "slug": "plaiser",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
