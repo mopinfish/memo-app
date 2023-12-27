@@ -1,51 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-import { List, FAB } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import format from 'date-fns/format';
-import { loadAll } from './store';
-import { Memo } from './model';
-import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, FlatList } from 'react-native'
+import { List, FAB } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+import format from 'date-fns/format'
+import { loadAll } from './store'
+import { Memo } from './model'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 type RootStackParamList = {
-  Main: undefined;
-  Compose: undefined;
-};
+  Main: undefined
+  Compose: undefined
+}
 
-type ComposeScreenProp = StackNavigationProp<RootStackParamList, 'Compose'>;
+type ComposeScreenProp = StackNavigationProp<RootStackParamList, 'Compose'>
 
 export const MainScreen = () => {
-  const navigation = useNavigation<ComposeScreenProp>();
-  const [memos, setMemos] = useState<Memo[]>([]);
+  const navigation = useNavigation<ComposeScreenProp>()
+  const [memos, setMemos] = useState<Memo[]>([])
 
   useEffect(() => {
     const initialize = async () => {
-      const newMemos = await loadAll();
-      setMemos(newMemos);
-    };
+      const newMemos = await loadAll()
+      setMemos(newMemos)
+    }
 
-    const unsubscribe = navigation.addListener('focus', initialize);
+    const unsubscribe = navigation.addListener('focus', initialize)
 
-    return unsubscribe;
-  }, [navigation]);
+    return unsubscribe
+  }, [navigation])
 
   const onPressAdd = () => {
-    navigation.navigate('Compose');
-  };
+    navigation.navigate('Compose')
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
         style={styles.list}
         data={memos}
-        keyExtractor={item => `${item.createdAt}`}
+        keyExtractor={(item) => `${item.createdAt}`}
         renderItem={({ item }) => (
           <List.Item
             title={item.text}
             titleNumberOfLines={5}
-            description={
-              `作成日時: ${format(item.createdAt, 'yyyy.MM.dd HH:mm')}`
-            }
+            description={`作成日時: ${format(item.createdAt, 'yyyy.MM.dd HH:mm')}`}
             descriptionStyle={{ textAlign: 'right' }}
           />
         )}
@@ -60,7 +58,7 @@ export const MainScreen = () => {
         onPress={onPressAdd}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -70,4 +68,4 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-});
+})

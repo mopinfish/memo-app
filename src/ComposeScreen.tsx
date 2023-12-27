@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform
-} from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { save } from './store';
+import React, { useState } from 'react'
+import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { TextInput, Button } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+import { save } from './store'
 
 export const ComposeScreen = () => {
-  const [ text, setText ] = useState('');
-  const navigation = useNavigation();
+  const [text, setText] = useState('')
+  const navigation = useNavigation()
 
   const onPressSave = async () => {
-    await save(text, Date.now());
-    navigation.goBack();
-  };
+    await save(text, Date.now())
+    navigation.goBack()
+  }
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
     >
       <TextInput
         style={{
@@ -31,19 +27,16 @@ export const ComposeScreen = () => {
         multiline
         onChangeText={(text) => setText(text)}
       />
-      <Button
-        mode="contained"
-        onPress={onPressSave}
-      >
+      <Button mode="contained" onPress={onPressSave}>
         保存
       </Button>
     </KeyboardAvoidingView>
   )
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
   },
-});
+})
